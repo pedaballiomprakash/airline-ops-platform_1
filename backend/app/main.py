@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
+from app.routers import auth, flights
+
 from app.core.config import settings
 from app.database.db import get_db
 from app.routers import flights
@@ -33,4 +35,6 @@ def db_health(db: Session = Depends(get_db)):
     return {"database": "connected"}
 
 
+app.include_router(auth.router, prefix=settings.API_V1_PREFIX)
+app.include_router(flights.router)
 app.include_router(flights.router)
